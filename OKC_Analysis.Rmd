@@ -1,0 +1,197 @@
+---
+title: "OKC_Shot_Analysis"
+output: html_document
+---
+
+
+```{r}
+shots_data <- read_csv("shots_data.csv")
+View(shots_data)
+```
+
+Total_counts
+```{r}
+total <- shots_data %>%
+  count()
+
+total_A <- shots_data %>%
+  filter(team =='Team A') %>%
+  count()
+
+total_B <- shots_data %>%
+  filter(team =='Team B') %>%
+  count()
+```
+
+Shot Distribution - Team A:
+```{r}
+TeamA_NC3 <- shots_data %>%
+  filter(team =='Team A') %>%
+  filter(y >7.8) %>%
+  filter(abs(x)>23.75) %>%
+  count()
+```
+
+```{r}
+TeamA_C3 <- shots_data %>%
+  filter(team =='Team A') %>%
+  filter(y <=7.8) %>%
+  filter(abs(x)>22) %>%
+  count()
+```
+
+```{r}
+TeamA_NC2Pt <- shots_data %>%
+  filter(team =='Team A') %>%
+  filter(y >7.8) %>%
+  filter(abs(x)<=23.75) %>%
+  count()
+
+TeamA_C2Pt <- shots_data %>%
+  filter(team =='Team A') %>%
+  filter(y <=7.8) %>%
+  filter(abs(x)<=22) %>%
+  count()
+
+TeamA_2Pt <- TeamA_NC2Pt + TeamA_C2Pt
+```
+
+Shot Distribution - Team B:
+```{r}
+TeamB_NC3 <- shots_data %>%
+  filter(team =='Team B') %>%
+  filter(y >7.8) %>%
+  filter(abs(x)>23.75) %>%
+  count()
+```
+
+```{r}
+TeamB_C3 <- shots_data %>%
+  filter(team =='Team B') %>%
+  filter(y <=7.8) %>%
+  filter(abs(x)>22) %>%
+  count()
+```
+
+```{r}
+TeamB_NC2Pt <- shots_data %>%
+  filter(team =='Team B') %>%
+  filter(y >7.8) %>%
+  filter(abs(x)<=23.75) %>%
+  count()
+
+TeamB_C2Pt <- shots_data %>%
+  filter(team =='Team B') %>%
+  filter(y <=7.8) %>%
+  filter(abs(x)<=22) %>%
+  count()
+
+TeamB_2Pt <- TeamB_NC2Pt + TeamB_C2Pt
+```
+
+
+Shot Count Results:
+```{r}
+Team_A_2Pt_Pct <- TeamA_2Pt/total_A
+Team_A_C3_Pct <- TeamA_C3/total_A
+Team_A_NC3_Pct <- TeamA_NC3/total_A
+Team_B_2Pt_Pct <- TeamB_2Pt/total_B
+Team_B_C3_Pct <- TeamB_C3/total_B
+Team_B_NC3_Pct <- TeamB_NC3/total_B
+```
+
+eFG Calc:
+```{r}
+TeamA_made_NC2PT<- shots_data %>%
+  filter(fgmade == 1) %>%
+  filter(team =='Team A') %>%
+  filter(y >7.8) %>%
+  filter(abs(x)<=23.75) %>%
+  count()
+
+TeamA_made_C2PT<- shots_data %>%
+  filter(fgmade == 1) %>%
+  filter(team =='Team A') %>%
+  filter(y <=7.8) %>%
+  filter(abs(x)<=22) %>%
+  count()
+```
+
+```{r}
+TeamA_made_C3 <- shots_data %>%
+  filter(fgmade == 1) %>%
+  filter(team =='Team A') %>%
+  filter(y <=7.8) %>%
+  filter(abs(x)>22) %>%
+  count()
+```
+
+```{r}
+TeamA_made_NC3 <- shots_data %>%
+  filter(fgmade == 1) %>%
+  filter(team =='Team A') %>%
+  filter(y >7.8) %>%
+  filter(abs(x)>23.75) %>%
+  count()
+```
+
+```{r}
+TeamB_made_NC2PT<- shots_data %>%
+  filter(fgmade == 1) %>%
+  filter(team =='Team B') %>%
+  filter(y >7.8) %>%
+  filter(abs(x)<=23.75) %>%
+  count()
+
+TeamB_made_C2PT<- shots_data %>%
+  filter(fgmade == 1) %>%
+  filter(team =='Team B') %>%
+  filter(y <=7.8) %>%
+  filter(abs(x)<=22) %>%
+  count()
+```
+
+```{r}
+TeamB_made_C3 <- shots_data %>%
+  filter(fgmade == 1) %>%
+  filter(team =='Team B') %>%
+  filter(y <=7.8) %>%
+  filter(abs(x)>22) %>%
+  count()
+```
+
+```{r}
+TeamB_made_NC3 <- shots_data %>%
+  filter(fgmade == 1) %>%
+  filter(team =='Team B') %>%
+  filter(y >7.8) %>%
+  filter(abs(x)>23.75) %>%
+  count()
+```
+
+Results:
+```{r}
+Team_A_eFG_2PT <- (TeamA_made_NC2PT+TeamA_made_C2PT)/TeamA_2Pt
+Team_A_eFG_C3 <- (TeamA_made_C3*1.5)/TeamA_C3
+Team_A_eFG_NC3 <- (TeamA_made_NC3*1.5)/TeamA_C3
+Team_B_eFG_2PT <- (TeamB_made_NC2PT+TeamB_made_C2PT)/TeamB_2Pt
+Team_B_eFG_C3 <- (TeamB_made_C3*1.5)/TeamB_C3
+Team_B_eFG_NC3 <- (TeamB_made_NC3*1.5)/TeamB_C3
+```
+
+Printing Results to console
+```{r}
+Team_A_2Pt_Pct
+Team_A_C3_Pct
+Team_A_NC3_Pct
+Team_B_2Pt_Pct
+Team_B_C3_Pct
+Team_B_NC3_Pct
+Team_A_eFG_2PT
+Team_A_eFG_C3
+Team_A_eFG_NC3
+Team_B_eFG_2PT
+Team_B_eFG_C3 
+Team_B_eFG_NC3
+```
+
